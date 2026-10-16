@@ -5,8 +5,7 @@ using System.Text.Json;
 var factory = new ConnectionFactory { HostName = "localhost" };
 using var connection = await factory.CreateConnectionAsync();
 using var channel = await connection.CreateChannelAsync();
-await channel.QueueDeclareAsync(queue: "invoice-service", durable: false,
-exclusive: false, autoDelete: false, arguments: null);
+await channel.QueueDeclareAsync(queue: "invoice-service", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
 //await channel.ExchangeDeclareAsync(exchange: "invoice-service", ExchangeType.Fanout);
 
@@ -59,6 +58,5 @@ new InvoiceItems
 
 var message = JsonSerializer.Serialize(invoiceCreated);
 var body = Encoding.UTF8.GetBytes(message);
-await channel.BasicPublishAsync(exchange: string.Empty,
-routingKey: "invoice-service", body: body);
+await channel.BasicPublishAsync(exchange: string.Empty, routingKey: "invoice-service", body: body);
 };
